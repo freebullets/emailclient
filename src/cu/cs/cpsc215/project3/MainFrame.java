@@ -19,6 +19,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.TableModel;
 
 interface Command {
 	void execute();
@@ -194,6 +195,10 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 	private void exit() {
 		DataStore.getInstance().save();
 		dispose();
+	}
+	
+	public TableModel getTableModel() {
+		return contactsTbl.getModel();
 	}
 	
 	public void refreshData() {

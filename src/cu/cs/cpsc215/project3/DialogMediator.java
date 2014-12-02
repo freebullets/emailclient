@@ -15,6 +15,7 @@ public class DialogMediator {
 	private ContactEditingDlg contactDlg = new ContactEditingDlg();
 	private EmailTransmissionDlg transDlg = new EmailTransmissionDlg();
 	private SystemInformationDlg sysDlg = new SystemInformationDlg();
+	private EmailPicker emlPicker = new EmailPicker();
 
 	public ConfigurationDlg getCfgDlg() {
 		return cfgDlg;
@@ -30,5 +31,9 @@ public class DialogMediator {
 
 	public SystemInformationDlg getSysDlg() {
 		return sysDlg;
+	}
+
+	public EmailPicker getEmlPicker() {
+		return emlPicker;
 	}
 }

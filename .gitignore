@@ -13,4 +13,10 @@ hs_err_pid*
 
 *.zip
 *.ser
+*.bak
 *~
+.classpath
+.project
+.settings
+bin
+

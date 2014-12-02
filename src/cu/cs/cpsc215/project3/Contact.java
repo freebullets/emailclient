@@ -2,7 +2,7 @@ package cu.cs.cpsc215.project3;
 
 import java.io.Serializable;
 
-public class Contact implements Serializable {
+public class Contact implements Serializable, Comparable<Contact> {
 	private static final long serialVersionUID = 2890357998132010842L;
 	private String first, last, email, address, phone;
 
@@ -52,6 +52,15 @@ public class Contact implements Serializable {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	@Override
+	public int compareTo(Contact arg0) {
+		if (arg0 == null)
+			return 1;
+		if (this == arg0)
+			return 0;
+		return this.email.compareTo(arg0.getEmail());
 	}
 
 }
