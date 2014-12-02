@@ -133,12 +133,16 @@ public class ConfigurationDlg extends JDialog {
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ConfigurationDlg.this.save();
-				ConfigurationDlg.this.setVisible(false);
 			}
 		});
 		panelButtons.add(btnSave);
 		
 		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ConfigurationDlg.this.setVisible(false);
+			}
+		});
 		panelButtons.add(btnCancel);
 		
 		defaultColor = txtSmtpPort.getBackground();
@@ -168,6 +172,8 @@ public class ConfigurationDlg extends JDialog {
 		DataStore.getInstance().setSecure(chkStartTLS.isSelected());
 		DataStore.getInstance().setEmail(txtUsername.getText());
 		DataStore.getInstance().setPassword(passwordField.getText());
+		
+		setVisible(false);
 	}
 	
 	private void fillFields() {

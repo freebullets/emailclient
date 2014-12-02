@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
@@ -15,8 +17,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 interface Command {
 	void execute();
@@ -126,9 +128,8 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 		panel.add(frameEditBtn);
 		panel.add(frameDeleteBtn);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		getContentPane().add(scrollPane, BorderLayout.CENTER);
-		getContentPane().add(contactsTbl, BorderLayout.CENTER);
+		JScrollPane myScrollPane = new JScrollPane(contactsTbl);
+		getContentPane().add(myScrollPane, BorderLayout.CENTER);
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -181,6 +182,13 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 			}
 		});
 		mnHelp.add(mntmAbout);
+		
+		contactsTbl.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2)
+					MainFrame.this.edit();
+			}
+		});
 	}
 	
 	private void exit() {

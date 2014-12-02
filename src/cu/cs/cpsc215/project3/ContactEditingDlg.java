@@ -156,7 +156,7 @@ public class ContactEditingDlg extends JDialog {
 		txtEmail.setText(c.getEmail());
 		txtAddress.setText(c.getAddress());
 		txtPhone.setText(c.getPhone());
-		txtEmail.requestFocus();
+		txtFirst.requestFocus();
 		contactID = row;
 	}
 	

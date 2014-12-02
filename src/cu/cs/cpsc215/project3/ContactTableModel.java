@@ -5,6 +5,7 @@ import javax.swing.table.AbstractTableModel;
 public class ContactTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 5285754129908910200L;
 	private DataStore ds = DataStore.getInstance();
+	private String[] columns = { "First", "Last", "Email", "Phone", "Address" };
 
 	@Override
 	public int getColumnCount() {
@@ -52,5 +53,10 @@ public class ContactTableModel extends AbstractTableModel {
 		}
 		
 		fireTableDataChanged();
+	}
+
+	@Override
+	public String getColumnName(int column) {
+		return columns[column];
 	}
 }
