@@ -139,12 +139,12 @@ public class ContactEditingDlg extends JDialog {
 					c.setEmail(txtEmail.getText());
 					c.setAddress(txtAddress.getText());
 					c.setPhone(txtPhone.getText());
-					ContactEditingDlg.this.setVisible(false);
 				} else {
 					// Add a new contact
 					ds.addContact(txtFirst.getText(), txtLast.getText(), txtEmail.getText(), txtAddress.getText(), txtPhone.getText());
-					ContactEditingDlg.this.setVisible(false);
 				}
+				MainFrame.getInstance().refreshData();
+				ContactEditingDlg.this.setVisible(false);
 			}
 		});
 	}
@@ -156,15 +156,11 @@ public class ContactEditingDlg extends JDialog {
 		txtEmail.setText(c.getEmail());
 		txtAddress.setText(c.getAddress());
 		txtPhone.setText(c.getPhone());
-		txtFirst.setEnabled(false);
-		txtLast.setEnabled(false);
 		txtEmail.requestFocus();
 		contactID = row;
 	}
 	
 	public void clearFields() {
-		txtFirst.setEnabled(true);
-		txtLast.setEnabled(true);
 		txtFirst.setText("");
 		txtLast.setText("");
 		txtEmail.setText("");

@@ -34,6 +34,10 @@ public class ContactTableModel extends AbstractTableModel {
 		}
 	}
 	
+	public void refreshData() {
+		fireTableDataChanged();
+	}
+	
 	public void addNewContact(Contact p) {
 		ds.addContact(p);
 		fireTableRowsInserted(getRowCount() - 1, getRowCount() - 1);

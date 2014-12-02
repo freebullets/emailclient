@@ -16,6 +16,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JScrollPane;
 
 interface Command {
 	void execute();
@@ -112,7 +113,6 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 		setIconImage(img.getImage());
 		
 		setSize(600, 400);
-		getContentPane().add(contactsTbl, BorderLayout.CENTER);
 
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(0, 3, 0, 0));
@@ -125,6 +125,10 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 		panel.add(frameAddBtn);
 		panel.add(frameEditBtn);
 		panel.add(frameDeleteBtn);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		getContentPane().add(scrollPane, BorderLayout.CENTER);
+		getContentPane().add(contactsTbl, BorderLayout.CENTER);
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -181,8 +185,11 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 	
 	private void exit() {
 		DataStore.getInstance().save();
-		System.out.println("exiting");
 		dispose();
+	}
+	
+	public void refreshData() {
+		((ContactTableModel) contactsTbl.getModel()).refreshData();
 	}
 	
 	BtnAdd btnAdd;
@@ -228,6 +235,6 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 	@Override
 	public void delete() {
 		ds.removeContact(contactsTbl.getSelectedRow());
-		
+		refreshData();
 	}
 }
