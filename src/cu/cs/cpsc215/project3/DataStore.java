@@ -34,7 +34,7 @@ public class DataStore {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")  // For casting ArrayList
 	public void load() {
 		try {
 			FileInputStream fin = new FileInputStream("AddressBook.ser");

@@ -1,20 +1,20 @@
 package cu.cs.cpsc215.project3;
 
-import javax.swing.JFrame;
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
-
-import javax.swing.JButton;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JTable;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import java.awt.GridLayout;
+import javax.swing.JTable;
 
 interface Command {
 	void execute();
@@ -155,25 +155,37 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 			}
 		});
 		mnFile.add(mntmContacts);
-
-		JMenuItem mntmConfiguration = new JMenuItem("Configuration");
-		mntmConfiguration.addActionListener(new ActionListener() {
+		
+		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				DataStore.getInstance().save();
+				System.exit(0);
+			}
+		});
+		mnFile.add(mntmExit);
+		
+		JMenu mnConfiguration = new JMenu("Configuration");
+		menuBar.add(mnConfiguration);
+		
+		JMenuItem mntmConfigure = new JMenuItem("Configure");
+		mnConfiguration.add(mntmConfigure);
+		mntmConfigure.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cfgDlg.setVisible(true);
 			}
 		});
-		mnFile.add(mntmConfiguration);
 
-		JMenu mnAbout = new JMenu("About");
-		menuBar.add(mnAbout);
+		JMenu mnHelp = new JMenu("Help");
+		menuBar.add(mnHelp);
 
-		JMenuItem mntmSystemInformation = new JMenuItem("System Information");
-		mntmSystemInformation.addActionListener(new ActionListener() {
+		JMenuItem mntmAbout = new JMenuItem("About");
+		mntmAbout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				sysDlg.setVisible(true);
 			}
 		});
-		mnAbout.add(mntmSystemInformation);
+		mnHelp.add(mntmAbout);
 	}
 	
 	BtnAdd btnAdd;
@@ -214,11 +226,11 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 
 	@Override
 	public void edit() {
-		contactDlg.setVisible(true);
 		int row = contactsTbl.getSelectedRow();
 		if (row > -1) {
 			contactDlg.fillFields(ds.getContact(row).getFirst(), ds.getContact(row).getLast(), ds.getContact(row).getEmail(), ds.getContact(row).getAddress(), ds.getContact(row).getPhone());
 		}
+		contactDlg.setVisible(true);
 	}
 
 	@Override

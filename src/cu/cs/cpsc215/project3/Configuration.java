@@ -6,6 +6,7 @@ public class Configuration implements Serializable {
 	private static final long serialVersionUID = 404084985614717941L;
 	private String email, password, smtpServer;
 	private Integer smtpPort;
+	private Boolean secure;
 	
 	public String getEmail() {
 		return email;
@@ -30,6 +31,12 @@ public class Configuration implements Serializable {
 	}
 	public void setSmtpPort(Integer smtpPort) {
 		this.smtpPort = smtpPort;
+	}
+	public Boolean getSecure() {
+		return secure;
+	}
+	public void setSecure(Boolean secure) {
+		this.secure = secure;
 	}
 
 }
