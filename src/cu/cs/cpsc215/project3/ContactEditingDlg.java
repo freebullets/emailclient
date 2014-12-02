@@ -6,8 +6,11 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -22,6 +25,7 @@ public class ContactEditingDlg extends JDialog {
 	private JTextField txtEmail;
 	private JTextField txtPhone;
 	private JTextField txtAddress;
+	private Color defaultColor;
 	private DataStore ds = DataStore.getInstance();
 	
 	public ContactEditingDlg() {
@@ -127,10 +131,19 @@ public class ContactEditingDlg extends JDialog {
 		panelInner.add(txtPhone, gbc_txtPhone);
 		lblPhone.setLabelFor(txtPhone);
 		
+		defaultColor = txtFirst.getBackground();
+		
 		JButton btnSave = new JButton("Save");
 		panelOuter.add(btnSave, BorderLayout.SOUTH);
 		btnSave.addActionListener(new ActionListener() {
+			CharSequence emailChars = "@";
 			public void actionPerformed(ActionEvent e) {
+				if (!txtEmail.getText().contains(emailChars)) {
+					txtEmail.setBackground(UIManager.getColor("OptionPane.errorDialog.titlePane.background"));
+					return;
+				}
+				txtEmail.setBackground(defaultColor);
+				
 				if (ContactEditingDlg.this.contactID > -1) {
 					// Edit an existing contact
 					Contact c = ds.getContact(ContactEditingDlg.this.contactID);
