@@ -68,14 +68,6 @@ public class DataStore {
 		return contacts.get(index);
 	}
 	
-	public Contact findContact(String first, String last) {
-		for (Contact i : contacts) {
-			if (i.getFirst() == first && i.getLast() == last)
-				return i;
-		}
-		return null;
-	}
-	
 	public String getEmail() {
 		return cfg.getEmail();
 	}

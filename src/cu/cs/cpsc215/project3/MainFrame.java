@@ -2,12 +2,13 @@ package cu.cs.cpsc215.project3;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -24,7 +25,6 @@ interface IMediator {
 	public void add();
 	public void edit();
 	public void delete();
-	public void registerTable(TblDisplay v);
 	public void registerAdd(BtnAdd a);
 	public void registerEdit(BtnEdit b);
 	public void registerDelete(BtnDelete d);
@@ -81,29 +81,25 @@ class BtnDelete extends JButton implements Command {
 
 }
 
-class TblDisplay extends JTable {
-	private static final long serialVersionUID = 426862L;
-	IMediator med;
-
-	TblDisplay(IMediator m) {
-		super(new ContactTableModel());
-		med = m;
-		med.registerTable(this);
-	}
-
-}
-
 public class MainFrame extends JFrame implements ActionListener, IMediator {
 	private static final long serialVersionUID = 1745232698701012553L;
-	DataStore ds;
-	ConfigurationDlg cfgDlg = new ConfigurationDlg();
-	ContactEditingDlg contactDlg = new ContactEditingDlg();
-	EmailTransmissionDlg transDlg = new EmailTransmissionDlg();
-	SystemInformationDlg sysDlg = new SystemInformationDlg();
-	TblDisplay contactsTbl;
+	private static MainFrame instance = null;
+	private DataStore ds;
+	private ConfigurationDlg cfgDlg = new ConfigurationDlg();
+	private ContactEditingDlg contactDlg = new ContactEditingDlg();
+	private EmailTransmissionDlg transDlg = new EmailTransmissionDlg();
+	private SystemInformationDlg sysDlg = new SystemInformationDlg();
+	private JTable contactsTbl = new JTable(new ContactTableModel());
+	
+	public static MainFrame getInstance() {
+		if (instance == null)
+			instance = new MainFrame();
+		return instance;
+	}
 
-	public MainFrame() {
+	private MainFrame() {
 		super("Email Client 1.0");
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		ds = DataStore.getInstance();
 		ds.load();
@@ -111,15 +107,15 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				DataStore.getInstance().save();
-				System.exit(0);
+				exit();
 			}
 		});
-
-		setIconImage(Toolkit.getDefaultToolkit().getImage(
-				"/path/to/image.ico"));
+		
+		URL imgURL = getClass().getResource("/res/icon.png");
+		ImageIcon img = new ImageIcon(imgURL);
+		setIconImage(img.getImage());
+		
 		setSize(600, 400);
-		contactsTbl = new TblDisplay(this);
 		getContentPane().add(contactsTbl, BorderLayout.CENTER);
 
 		JPanel panel = new JPanel();
@@ -148,19 +144,18 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 		});
 		mnFile.add(mntmCompose);
 
-		JMenuItem mntmContacts = new JMenuItem("Contacts");
-		mntmContacts.addActionListener(new ActionListener() {
+		JMenuItem mntmAddContact = new JMenuItem("Add Contact");
+		mntmAddContact.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				contactDlg.setVisible(true);
+				MainFrame.this.add();
 			}
 		});
-		mnFile.add(mntmContacts);
+		mnFile.add(mntmAddContact);
 		
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mntmExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				DataStore.getInstance().save();
-				System.exit(0);
+				MainFrame.this.exit();
 			}
 		});
 		mnFile.add(mntmExit);
@@ -188,10 +183,14 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 		mnHelp.add(mntmAbout);
 	}
 	
+	private void exit() {
+		DataStore.getInstance().save();
+		dispose();
+	}
+	
 	BtnAdd btnAdd;
 	BtnEdit btnEdit;
 	BtnDelete btnDelete;
-	TblDisplay show;
 
 	@Override
 	public void registerAdd(BtnAdd a) {
@@ -209,11 +208,6 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 	}
 
 	@Override
-	public void registerTable(TblDisplay d) {
-		show = d;
-	}
-
-	@Override
     public void actionPerformed(ActionEvent ae) {
         Command comd = (Command) ae.getSource();
         comd.execute();
@@ -221,6 +215,7 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 
 	@Override
 	public void add() {
+		contactDlg.clearFields();
 		contactDlg.setVisible(true);
 	}
 
@@ -228,9 +223,9 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 	public void edit() {
 		int row = contactsTbl.getSelectedRow();
 		if (row > -1) {
-			contactDlg.fillFields(ds.getContact(row).getFirst(), ds.getContact(row).getLast(), ds.getContact(row).getEmail(), ds.getContact(row).getAddress(), ds.getContact(row).getPhone());
+			contactDlg.fillFields(row);
+			contactDlg.setVisible(true);
 		}
-		contactDlg.setVisible(true);
 	}
 
 	@Override

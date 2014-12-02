@@ -16,6 +16,7 @@ import java.awt.BorderLayout;
 public class ContactEditingDlg extends JDialog {
 	private static final long serialVersionUID = 1934754311031699765L;
 	private static ContactEditingDlg instance = null;
+	private Integer contactID = -1;
 	
 	public static ContactEditingDlg getInstance() {
 		if (instance == null)
@@ -31,7 +32,7 @@ public class ContactEditingDlg extends JDialog {
 	DataStore ds = DataStore.getInstance();
 	
 	public ContactEditingDlg() {
-		setSize(366, 177);
+		setSize(291, 177);
 		setTitle("Contacts");
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -83,29 +84,12 @@ public class ContactEditingDlg extends JDialog {
 		gbc_txtLast.gridy = 1;
 		panelInner.add(txtLast, gbc_txtLast);
 		
-		JLabel lblAddress = new JLabel("Address:");
-		GridBagConstraints gbc_lblAddress = new GridBagConstraints();
-		gbc_lblAddress.insets = new Insets(0, 0, 5, 5);
-		gbc_lblAddress.fill = GridBagConstraints.BOTH;
-		gbc_lblAddress.gridx = 0;
-		gbc_lblAddress.gridy = 2;
-		panelInner.add(lblAddress, gbc_lblAddress);
-		lblAddress.setLabelFor(txtAddress);
-		
-		txtAddress = new JTextField();
-		GridBagConstraints gbc_txtAddress = new GridBagConstraints();
-		gbc_txtAddress.insets = new Insets(0, 0, 5, 0);
-		gbc_txtAddress.fill = GridBagConstraints.BOTH;
-		gbc_txtAddress.gridx = 1;
-		gbc_txtAddress.gridy = 2;
-		panelInner.add(txtAddress, gbc_txtAddress);
-		
 		JLabel lblEmail = new JLabel("Email:");
 		GridBagConstraints gbc_lblEmail = new GridBagConstraints();
 		gbc_lblEmail.insets = new Insets(0, 0, 5, 5);
 		gbc_lblEmail.fill = GridBagConstraints.BOTH;
 		gbc_lblEmail.gridx = 0;
-		gbc_lblEmail.gridy = 3;
+		gbc_lblEmail.gridy = 2;
 		panelInner.add(lblEmail, gbc_lblEmail);
 		lblEmail.setLabelFor(txtEmail);
 		
@@ -114,8 +98,25 @@ public class ContactEditingDlg extends JDialog {
 		gbc_txtEmail.insets = new Insets(0, 0, 5, 0);
 		gbc_txtEmail.fill = GridBagConstraints.BOTH;
 		gbc_txtEmail.gridx = 1;
-		gbc_txtEmail.gridy = 3;
+		gbc_txtEmail.gridy = 2;
 		panelInner.add(txtEmail, gbc_txtEmail);
+		
+		JLabel lblAddress = new JLabel("Address:");
+		GridBagConstraints gbc_lblAddress = new GridBagConstraints();
+		gbc_lblAddress.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAddress.fill = GridBagConstraints.BOTH;
+		gbc_lblAddress.gridx = 0;
+		gbc_lblAddress.gridy = 3;
+		panelInner.add(lblAddress, gbc_lblAddress);
+		
+		txtAddress = new JTextField();
+		GridBagConstraints gbc_txtAddress = new GridBagConstraints();
+		gbc_txtAddress.insets = new Insets(0, 0, 5, 0);
+		gbc_txtAddress.fill = GridBagConstraints.BOTH;
+		gbc_txtAddress.gridx = 1;
+		gbc_txtAddress.gridy = 3;
+		panelInner.add(txtAddress, gbc_txtAddress);
+		lblAddress.setLabelFor(txtAddress);
 		
 		JLabel lblPhone = new JLabel("Phone:");
 		GridBagConstraints gbc_lblPhone = new GridBagConstraints();
@@ -137,28 +138,46 @@ public class ContactEditingDlg extends JDialog {
 		panelOuter.add(btnSave, BorderLayout.SOUTH);
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Contact c = ds.findContact(txtFirst.getText(), txtLast.getText());
-				if (c != null) {
+				if (ContactEditingDlg.this.contactID > -1) {
+					// Edit an existing contact
+					Contact c = ds.getContact(ContactEditingDlg.this.contactID);
+					c.setFirst(txtFirst.getText());
+					c.setLast(txtLast.getText());
 					c.setEmail(txtEmail.getText());
 					c.setAddress(txtAddress.getText());
 					c.setPhone(txtPhone.getText());
-					ContactEditingDlg.getInstance().setVisible(false);
+					ContactEditingDlg.this.setVisible(false);
 				} else {
+					// Add a new contact
 					ds.addContact(txtFirst.getText(), txtLast.getText(), txtEmail.getText(), txtAddress.getText(), txtPhone.getText());
-					ContactEditingDlg.getInstance().setVisible(false);
+					ContactEditingDlg.this.setVisible(false);
 				}
 			}
 		});
 	}
 	
-	public void fillFields(String first, String last, String email, String address,	String phone) {
-		txtFirst.setText(first);
-		txtLast.setText(last);
-		txtEmail.setText(email);
-		txtAddress.setText(address);
-		txtPhone.setText(phone);
+	public void fillFields(Integer row) {
+		Contact c = DataStore.getInstance().getContact(row);
+		txtFirst.setText(c.getFirst());
+		txtLast.setText(c.getLast());
+		txtEmail.setText(c.getEmail());
+		txtAddress.setText(c.getAddress());
+		txtPhone.setText(c.getPhone());
 		txtFirst.setEnabled(false);
 		txtLast.setEnabled(false);
+		txtEmail.requestFocus();
+		contactID = row;
 	}
 	
+	public void clearFields() {
+		txtFirst.setEnabled(true);
+		txtLast.setEnabled(true);
+		txtFirst.setText("");
+		txtLast.setText("");
+		txtEmail.setText("");
+		txtAddress.setText("");
+		txtPhone.setText("");
+		txtFirst.requestFocus();
+		contactID = -1;
+	}
 }
