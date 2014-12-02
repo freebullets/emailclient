@@ -1,6 +1,7 @@
 package cu.cs.cpsc215.project3;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -13,20 +14,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.UIManager;
 
 public class ConfigurationDlg extends JDialog {
-	private static ConfigurationDlg instance = null;
 	private static final long serialVersionUID = -4496578696147097963L;
 	private JTextField txtSmtpHost;
 	private JTextField txtSmtpPort;
+	private JCheckBox chkStartTLS;
 	private JTextField txtUsername;
 	private JPasswordField passwordField;
-	
-	public static ConfigurationDlg getInstance() {
-		if (instance == null)
-			instance = new ConfigurationDlg();
-		return instance;
-	}
+	private Color defaultColor;
 	
 	public ConfigurationDlg() {
 		setModal(true);
@@ -81,7 +80,7 @@ public class ConfigurationDlg extends JDialog {
 		txtSmtpPort.setText("587");
 		txtSmtpPort.setColumns(20);
 		
-		JCheckBox chkStartTLS = new JCheckBox("StartTLS");
+		chkStartTLS = new JCheckBox("StartTLS");
 		GridBagConstraints gbc_chkStartTLS = new GridBagConstraints();
 		gbc_chkStartTLS.anchor = GridBagConstraints.WEST;
 		gbc_chkStartTLS.insets = new Insets(0, 0, 5, 0);
@@ -131,9 +130,48 @@ public class ConfigurationDlg extends JDialog {
 		panelButtons.setLayout(new GridLayout(0, 2, 0, 0));
 		
 		JButton btnSave = new JButton("Save");
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ConfigurationDlg.this.save();
+			}
+		});
 		panelButtons.add(btnSave);
 		
 		JButton btnCancel = new JButton("Cancel");
 		panelButtons.add(btnCancel);
+		
+		defaultColor = txtSmtpPort.getBackground();
+		
+		fillFields();
+	}
+	
+	@SuppressWarnings("deprecation")
+	private void save() {
+		Integer smtpPort;
+		try {
+			smtpPort = Integer.parseInt(txtSmtpPort.getText());
+		} catch (NumberFormatException e) {
+			txtSmtpPort.setBackground(UIManager.getColor("OptionPane.errorDialog.titlePane.background"));
+			return;
+		}
+		txtSmtpPort.setBackground(defaultColor);
+		
+		// Host can be an IP address, hostname, etc. Just check that it's filled.
+		if (txtSmtpHost.getText().length() <= 0) {
+			txtSmtpHost.setBackground(UIManager.getColor("OptionPane.errorDialog.titlePane.background"));
+			return;
+		}
+		txtSmtpHost.setBackground(defaultColor);
+		
+		DataStore.getInstance().setSmtpServer(txtSmtpHost.getText());
+		DataStore.getInstance().setSmtpPort(smtpPort);
+		DataStore.getInstance().setSecure(chkStartTLS.isSelected());
+		DataStore.getInstance().setEmail(txtUsername.getText());
+		DataStore.getInstance().setPassword(passwordField.getText());
+	}
+	
+	private void fillFields() {
+		txtSmtpHost.setText(DataStore.getInstance().getSmtpServer());
+		txtSmtpPort.setText(DataStore.getInstance().getSmtpPort().toString());
 	}
 }

@@ -6,23 +6,15 @@ import java.awt.BorderLayout;
 import javax.swing.SwingConstants;
 
 public class SystemInformationDlg extends JDialog {
-	private static SystemInformationDlg instance = null;
-	
-	public static SystemInformationDlg getInstance() {
-		if (instance == null)
-			instance = new SystemInformationDlg();
-		return instance;
-	}
+	private static final long serialVersionUID = -5034921950713479684L;
 	
 	public SystemInformationDlg() {
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setTitle("System Information");
-		setSize(400, 200);
-		JLabel lblEmailClient = new JLabel("Email Client 1.0 by Jesse Kennedy");
+		setSize(485, 176);
+		JLabel lblEmailClient = new JLabel("Email Client 1.0 by Jesse Kennedy and Omar Mayar");
 		lblEmailClient.setHorizontalAlignment(SwingConstants.CENTER);
 		getContentPane().add(lblEmailClient, BorderLayout.CENTER);
 	}
-	
-	private static final long serialVersionUID = -5034921950713479684L;
 
 }

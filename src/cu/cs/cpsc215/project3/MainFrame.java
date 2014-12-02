@@ -85,10 +85,6 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 	private static final long serialVersionUID = 1745232698701012553L;
 	private static MainFrame instance = null;
 	private DataStore ds;
-	private ConfigurationDlg cfgDlg = new ConfigurationDlg();
-	private ContactEditingDlg contactDlg = new ContactEditingDlg();
-	private EmailTransmissionDlg transDlg = new EmailTransmissionDlg();
-	private SystemInformationDlg sysDlg = new SystemInformationDlg();
 	private JTable contactsTbl = new JTable(new ContactTableModel());
 	
 	public static MainFrame getInstance() {
@@ -99,7 +95,7 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 
 	private MainFrame() {
 		super("Email Client 1.0");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		ds = DataStore.getInstance();
 		ds.load();
@@ -139,7 +135,7 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 		JMenuItem mntmCompose = new JMenuItem("Compose");
 		mntmCompose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				transDlg.setVisible(true);
+				DialogMediator.getInstance().getTransDlg().setVisible(true);
 			}
 		});
 		mnFile.add(mntmCompose);
@@ -167,7 +163,7 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 		mnConfiguration.add(mntmConfigure);
 		mntmConfigure.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cfgDlg.setVisible(true);
+				DialogMediator.getInstance().getCfgDlg().setVisible(true);
 			}
 		});
 
@@ -177,7 +173,7 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mntmAbout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				sysDlg.setVisible(true);
+				DialogMediator.getInstance().getSysDlg().setVisible(true);
 			}
 		});
 		mnHelp.add(mntmAbout);
@@ -185,6 +181,7 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 	
 	private void exit() {
 		DataStore.getInstance().save();
+		System.out.println("exiting");
 		dispose();
 	}
 	
@@ -215,16 +212,16 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 
 	@Override
 	public void add() {
-		contactDlg.clearFields();
-		contactDlg.setVisible(true);
+		DialogMediator.getInstance().getContactDlg().clearFields();
+		DialogMediator.getInstance().getContactDlg().setVisible(true);
 	}
 
 	@Override
 	public void edit() {
 		int row = contactsTbl.getSelectedRow();
 		if (row > -1) {
-			contactDlg.fillFields(row);
-			contactDlg.setVisible(true);
+			DialogMediator.getInstance().getContactDlg().fillFields(row);
+			DialogMediator.getInstance().getContactDlg().setVisible(true);
 		}
 	}
 

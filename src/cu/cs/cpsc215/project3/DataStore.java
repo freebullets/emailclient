@@ -71,17 +71,32 @@ public class DataStore {
 	public String getEmail() {
 		return cfg.getEmail();
 	}
-
 	public void setEmail(String email) {
 		cfg.setEmail(email);
 	}
-
+	public String getPassword() {
+		return cfg.getPassword();
+	}
+	public void setPassword(String password) {
+		cfg.setPassword(password);
+	}
 	public String getSmtpServer() {
 		return cfg.getSmtpServer();
 	}
-
 	public void setSmtpServer(String smtpServer) {
 		cfg.setSmtpServer(smtpServer);
+	}
+	public Integer getSmtpPort() {
+		return cfg.getSmtpPort();
+	}
+	public void setSmtpPort(Integer smtpPort) {
+		cfg.setSmtpPort(smtpPort);
+	}
+	public Boolean getSecure() {
+		return cfg.getSecure();
+	}
+	public void setSecure(Boolean secure) {
+		cfg.setSecure(secure);
 	}
 
 }

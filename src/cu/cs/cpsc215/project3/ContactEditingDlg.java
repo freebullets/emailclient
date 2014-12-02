@@ -15,21 +15,14 @@ import java.awt.BorderLayout;
 
 public class ContactEditingDlg extends JDialog {
 	private static final long serialVersionUID = 1934754311031699765L;
-	private static ContactEditingDlg instance = null;
 	private Integer contactID = -1;
 	
-	public static ContactEditingDlg getInstance() {
-		if (instance == null)
-			instance = new ContactEditingDlg();
-		return instance;
-	}
-	
-	JTextField txtFirst;
-	JTextField txtLast;
-	JTextField txtEmail;
-	JTextField txtPhone;
-	JTextField txtAddress;
-	DataStore ds = DataStore.getInstance();
+	private JTextField txtFirst;
+	private JTextField txtLast;
+	private JTextField txtEmail;
+	private JTextField txtPhone;
+	private JTextField txtAddress;
+	private DataStore ds = DataStore.getInstance();
 	
 	public ContactEditingDlg() {
 		setSize(291, 177);
