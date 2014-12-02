@@ -2,6 +2,7 @@ package cu.cs.cpsc215.project3;
 
 import java.util.ArrayList;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -43,6 +44,9 @@ public class DataStore {
 			contacts = (ArrayList<Contact>) ois.readObject();
 			ois.close();
 			fin.close();
+		} catch (FileNotFoundException e) {
+			// If the file didn't exist make it instead
+			save();
 		} catch(Exception ex) {
 		   	ex.printStackTrace();
 		}

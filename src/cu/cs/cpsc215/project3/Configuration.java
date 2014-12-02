@@ -8,6 +8,15 @@ public class Configuration implements Serializable {
 	private Integer smtpPort;
 	private Boolean secure;
 	
+	public Configuration() {
+		email = "";
+		password = "";
+		smtpServer = "";
+		
+		smtpPort = new Integer(25);
+		secure = new Boolean(true);
+	}
+	
 	public String getEmail() {
 		return email;
 	}
@@ -30,6 +39,7 @@ public class Configuration implements Serializable {
 		return smtpPort;
 	}
 	public void setSmtpPort(Integer smtpPort) {
+		if (smtpPort == null) this.smtpPort = new Integer(25);
 		this.smtpPort = smtpPort;
 	}
 	public Boolean getSecure() {
