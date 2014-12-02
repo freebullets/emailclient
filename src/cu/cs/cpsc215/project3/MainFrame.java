@@ -117,7 +117,7 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 		});
 
 		setIconImage(Toolkit.getDefaultToolkit().getImage(
-				"/home/freebullets/Firefox_wallpaper.png"));
+				"/path/to/image.ico"));
 		setSize(600, 400);
 		contactsTbl = new TblDisplay(this);
 		getContentPane().add(contactsTbl, BorderLayout.CENTER);
