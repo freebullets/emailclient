@@ -32,6 +32,7 @@ public class ContactEditingDlg extends JDialog {
 		setSize(291, 177);
 		setTitle("Contacts");
 		setModalityType(ModalityType.APPLICATION_MODAL);
+		setLocationByPlatform(true);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		
 		JPanel panelOuter = new JPanel();

@@ -116,6 +116,7 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 		setIconImage(img.getImage());
 		
 		setSize(800, 600);
+		setLocationByPlatform(true);
 
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(0, 3, 0, 0));
@@ -186,9 +187,15 @@ public class MainFrame extends JFrame implements ActionListener, IMediator {
 		
 		contactsTbl.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2)
-					//MainFrame.this.edit();
+				if (e.getClickCount() == 2) {
+					DialogMediator.getInstance().getTransDlg().clear();
+					DialogMediator.getInstance().getTransDlg().addContact(
+							DataStore.getInstance().getContact(
+									contactsTbl.getSelectedRow()
+							)
+					);
 					DialogMediator.getInstance().getTransDlg().setVisible(true);
+				}
 			}
 		});
 	}

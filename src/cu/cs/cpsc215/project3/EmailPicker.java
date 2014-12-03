@@ -19,6 +19,7 @@ public class EmailPicker extends JDialog {
 		setTitle("Select an Email to Add");
 		setSize(450, 300);
 		setModalityType(ModalityType.APPLICATION_MODAL);
+		setLocationByPlatform(true);
 		
 		contactsTbl = new JTable(MainFrame.getInstance().getTableModel());
 		JScrollPane scrollPane = new JScrollPane(contactsTbl);
@@ -42,12 +43,10 @@ public class EmailPicker extends JDialog {
 	}
 	
 	private void selectContact() {
-		System.out.println(contactsTbl.getSelectedRow());
-		Contact c  = 				DataStore.getInstance().getContact(
-				contactsTbl.getSelectedRow()
-		);
-		DialogMediator.getInstance().getTransDlg().addContact(c
-
+		DialogMediator.getInstance().getTransDlg().addContact(
+				DataStore.getInstance().getContact(
+						contactsTbl.getSelectedRow()
+				)
 		);
 		
 		setVisible(false);

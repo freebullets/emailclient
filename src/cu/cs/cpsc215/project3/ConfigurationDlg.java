@@ -32,6 +32,7 @@ public class ConfigurationDlg extends JDialog {
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setTitle("System Configuration");
 		setSize(334, 186);
+		setLocationByPlatform(true);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JPanel panelMain = new JPanel();
@@ -89,7 +90,7 @@ public class ConfigurationDlg extends JDialog {
 		panelMain.add(chkStartTLS, gbc_chkStartTLS);
 		chkStartTLS.setSelected(true);
 		
-		JLabel lblUsername = new JLabel("Username");
+		JLabel lblUsername = new JLabel("Email");
 		GridBagConstraints gbc_lblUsername = new GridBagConstraints();
 		gbc_lblUsername.anchor = GridBagConstraints.WEST;
 		gbc_lblUsername.insets = new Insets(0, 0, 5, 5);

@@ -12,6 +12,7 @@ public class SystemInformationDlg extends JDialog {
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setTitle("System Information");
 		setSize(485, 176);
+		setLocationByPlatform(true);
 		JLabel lblEmailClient = new JLabel("Email Client 1.0 by Jesse Kennedy and Omar Mayar");
 		lblEmailClient.setHorizontalAlignment(SwingConstants.CENTER);
 		getContentPane().add(lblEmailClient, BorderLayout.CENTER);
